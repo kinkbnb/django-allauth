@@ -25,7 +25,7 @@ class MetamaskProvider(Provider):
 
     def get_login_url(self, request, **kwargs):
         next_url = "'%s'" % escapejs(kwargs.get("next") or "")
-        process = "'%s'" % escapejs(kwargs.get("process") or "login")
+        process = "'%s'" % escapejs(kwargs.get("process") or "redirect")
         return "javascript:getAccount(%s, %s)" % (next_url, process)
 
     def extract_common_fields(self, data):
