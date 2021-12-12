@@ -57,7 +57,7 @@ def login_api(request):
         login = providers.registry.by_id(MetamaskProvider.id, request).sociallogin_from_response(request, data)
         login.state = SocialLogin.state_from_request(request)
         login.token = storetoken
-        login.save(login,request)
+        login.save(request)
         return JsonResponse({'data': token, 'success': True },safe=False)
     else:
         token = request.session.get('login_token')
