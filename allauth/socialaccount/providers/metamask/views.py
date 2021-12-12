@@ -45,7 +45,7 @@ def login_api(request):
     provider = providers.registry.by_id(MetamaskProvider.id, request)
     url = settings.get("URL", "https://cloudflare-eth.com/")
     w3 = Web3(Web3.HTTPProvider(url))
-    if request.process == 'token' or request.process == 'connect':
+    if request.process == 'redirect' or request.process == 'connect':
         token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(32))
         request.session['login_token'] = token
         app = provider.get_app(request)
@@ -57,7 +57,7 @@ def login_api(request):
         login = providers.registry.by_id(MetamaskProvider.id, request).sociallogin_from_response(request, data)
         login.state = SocialLogin.state_from_request(request)
         login.token = storetoken
-        storetoken.save()
+
         return JsonResponse({'data': token, 'success': True },safe=False)
     else:
         token = request.session.get('login_token')

@@ -1,6 +1,6 @@
 /* global document, window, metamask */
 
-async function loginwithtoken(token,account,next,process){
+async function loginwithtoken(token,account,next){
     try {
       const from = account;
       let message = token;
@@ -42,7 +42,7 @@ async function loginwithtoken(token,account,next,process){
   // window.location.href = next;
 }
 
-async function getAccount(next, process="login") {
+async function getAccount(next, process="redirect") {
   const accounts = await ethereum.request({method: 'eth_requestAccounts'});
   const account = accounts[0];
   fetch('/accounts/metamask/login/', {
@@ -55,12 +55,12 @@ async function getAccount(next, process="login") {
     body: JSON.stringify({
       account: account,
       next: next,
-      process: 'token',
+      process: process,
     })
   })
   .then((response) => response.json())
   .then((responseJson) => {
-    loginwithtoken(responseJson.data, account, next, process)
+    loginwithtoken(responseJson.data, account, next)
   })
 }
 
